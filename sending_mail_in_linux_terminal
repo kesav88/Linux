@@ -6,4 +6,40 @@ sudo su
 # first install postfix
 apt install postfix
 
-#while installing it will ask for configuration setting
+#while installing it will ask for configuration setting select insternet site and click enter next your hostname will appear, check and select ok
+
+# switch to postfix config directory
+cd /etc/postfix/sasl
+# create a file named sasl_passwd and add the below content
+
+nano sasl_passwd
+[smtp.gmail.com]:587 mail_id:app password
+
+# next to create a database file
+
+postmap /etc/postfix/sasl/sasl_passwd
+
+#it will create anothe file with name sasl_passwd.db which containes all the info about email addresses, domains, and IP addresses that are used
+
+#next change ownership and file permissions for both  sasl_passwd and sasl_passwd.db files
+ chown root:root /etc/postfix/sasl/sasl_passwd /etc/postfix/sasl/sasl_passwd.db
+ chmod 600 /etc/postfix/sasl/sasl_passwd /etc/postfix/sasl/sasl_passwd.db
+ 
+ # next make changes in /etc/postfix/sasl/main.cf file
+ vi main.cf
+ # in that file add relayhost=[smtp.gmail.com]:587
+ and at the end add these below lines
+ #enable SASL authentication
+smtp_sasl_auth_enable = yes
+#disallow methods that allow anonymous authentication
+smtp_sasl_security_options = noanonymous
+#Location of sasl_passwd
+smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd
+#Enable STARTTLS encryption
+smtp_tls_security_level = encrypt
+#Location of CA certificates
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+
+#restart postfix now
+systemctl restart postfix
+
