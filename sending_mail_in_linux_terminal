@@ -1,0 +1,9 @@
+To send a mail from linux terminal
+
+# switch to root user
+sudo su
+
+# first install postfix
+apt install postfix
+
+#while installing it will ask for configuration setting
