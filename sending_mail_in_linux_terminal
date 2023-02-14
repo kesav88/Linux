@@ -43,3 +43,13 @@ smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
 #restart postfix now
 systemctl restart postfix
 
+# now everything is ready you can send mail using sendmail command
+
+sendmail mail_id    #an interactive session will open and u can type To: and Subject and body
+To: receivers mail_id
+Subject: Subject
+
+Body of the mail
+
+#once you are done typing , in new line use dot(.) and then enter, then the mail will be sent.
+
