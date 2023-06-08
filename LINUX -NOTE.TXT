@@ -625,3 +625,196 @@ $ echo “source ~/path/to/our/file/jump.sh”>> ~/.bashrc   --> this is the com
 to execute this,just call the function name with directory name u want to jump in
 
 $ jump dir_name
+Regular expressions::
+
+1. expr: expr can be used to perform operations on integers and strings
+
+expr 2 + 3 will give 5
+expr 3 - 2 will give 1 
+expr 2 \* 3 wil give 6 ( for multiplication we should use backslash followed by * )
+expr 10 / 5 will give 2
+
+We should maintain space between agruments and operators else it will throw errors
+
+to perform some operations on strings:
+
+a=kesava
+
+to display length of the string
+echo `expr length $a` 
+display index position of the given character, in this example k
+echo `expr index $a k` 
+
+to display substring from given 2 index positions
+
+a=kesava , now to display substring from 3rd index to 6th index
+echo `expr substr $a 3 6`
+
+to check relation between two integers
+
+expr 2 \< 3
+
+expr 2 = 3
+ 
+expr 2 \> 3
+
+expr 2 \!= 3
+
+if the output is 0, it means false
+if the output is 1, it means true
+
+
+to find num of common chars in two strings
+
+expr kesava : kes   will give output as 3
+expr kesava : kesa  will give output as 4 like this we can find no of common chars
+
+
+
+
+
+grep--global regular expression print
+
+cat msg.txt
+	kesava raju
+	kanumuri
+	msys
+
+grep k msg.txt  will display all the lines containing the letter k with highlighiting
+
+grep a msg.txt 	will display all the lines containing the letter a with highlighiting
+ 
+to find two letters present in a file
+
+grep -E 'k|a' msg.txt will highlight all the lines containing k and a characters
+grep -P 'k|a' msg.txt will highlight all the lines containing k and a characters
+grep -G 'k\|a' msg.txt will highlight all the lines containing k and a characters
+
+there are 3 types of options for expressions
+
+-E for extended regular expressions
+
+-G for basic regular expressions
+
+-P for perl regular expressions
+
+
+to find all the lines ending with a specified char
+
+grep u$ msg.text  will display lines ending with letter u
+grep s$ msg.text  will display lines ending with letter s
+
+to display all the lines starting with a specified letter
+
+grep ^k msg.txt  will display all the lines starts with letter k
+
+
+to display particular words in a files
+
+grep '\bmsys\b' msg.txt  will display all msys words
+
+we can do this by using -w option also
+
+grep -w msys msg.txt
+
+
+to rename also we can use regular expression
+
+if u want to change name of msg.txt file to msg.text
+
+rename 's/txt/text/' msg.txt  it will rename first occurence of that specified string only
+
+rename 's/txt/text/g' file_name it will rename all the occurences in that directory 
+
+for case insensitive we can use i option
+
+rename 's/txt/text/i' file_name it will rename all the strings/files in that directory irrespective of case sensitive
+
+
+
+
+
+sed: stream editor
+
+
+ it is used to replace words
+
+echo kesava | sed 's/ke/re/'  it will print resava by replacing ke with re
+
+echo kesava | sed 's:ke:re:'
+
+echo kesava | sed 's_ke_re_'
+
+echo kesava | sed 's|ke|re|'  all these will work and gives same output
+
+we can do this same on a file content also
+
+sed -i 's/string/replace_word/' file_name    -i means interactive 
+
+and we can use dots(.) to match any char
+
+echo XXXX-XX-XX | sed 's/....-..-../YYYY-MM-DD/' it will replace that xxxx-xx-xx with YYYY-MM-DD
+
+
+File permissions:;
+
+to see all the users 
+
+cat /etc/passwd  or  cut -d: -f1 /etc/passwd   both will display all the users
+
+to see all the groups
+
+cat /etc/group  or  cut -d: -f1 /etc/group  both will display all the users
+
+to see users and group for a files and directories
+
+ls -la
+
+to change group for a file or a directory
+
+chgrp new_group_name file/directory
+
+to copy file read,write,execute permissions from one file to another file
+
+cp -p file1 file2  then file1 permissions will be applied to file2 
+
+
+to create a physical volume
+
+pvcreate /dev/sdx   replace the /dev/sdx with the device name
+
+
+
+To check connectivity of a server on a particular port number there are so many ways
+	1. using timeout command
+           timeout <value> bash -c "</dev/tcp/<server>/<port>"
+		value- time limit to check the connectivity
+		server-ip address or domain
+		port-- port number to check
+
+		example: test connectivity of a server training.devops.info on port 443
+			timeout 10 bash -c "</dev/tcp/training.devops.info/443"
+
+         	it will print no output,, then check exit status by using command  echo $?
+					if the output is zero means connection success
+							 one means connection failed
+
+		to get a particular msg on screen for connection success or failure
+
+		timeout 10 bash -c "</dev/tcp/training.devops.info/443" && echo "connection success" || echo "connection failure"
+
+        2. using netcat
+
+            to install netcat    sudo yum install netcat-openbsd ( amazon-linux)
+				 sudo aot-get install netcat-openbsd (ubuntu)
+     		example:
+			 nc <server> <port> -vz      v for details 
+						     z to exit after finding connectivity status
+
+   			nc -vz training.devops.info 443
+
+	3. using telnet
+   	
+	  	telent <sever> <port>
+
+		ex:   telnet training.devops.info 443
